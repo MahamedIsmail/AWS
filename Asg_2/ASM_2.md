@@ -13,7 +13,7 @@ Deploy two EC2 instances, each in a different Availability Zone, behind an Appli
 - A health check configured on the Target Group's root path (/), with both targets reporting Healthy.
 - Security groups configured so the ALB accepts HTTP from anywhere, while each EC2 instance accepts HTTP only from the ALB's security group — never directly from the internet.
 - Verified load balancing: repeated requests to the ALB's DNS name alternate between both instances.
-- (Bonus) A custom Route 53 domain aliased to the ALB, an HTTPS listener using ACM, and an Auto Scaling Group behind the ALB.
+- (Bonus) A custom Route 53 domain aliased to the ALB, an HTTPS listener using ACM, and an Auto Scaling Group behind the ALB (I only implemented the first bonus in this assingment).
 
 ## Planning & Architecture
 
