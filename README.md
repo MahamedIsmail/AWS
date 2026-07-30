@@ -83,8 +83,8 @@ A two-part hands-on AWS portfolio covering core networking fundamentals and prod
 ```
 .
 ├── README.md
-├── AWS_Project_ASM_1.docx          # Assignment 1 full report — VPC & Networking
-└── Assignment2_ALB_Report.docx     # Assignment 2 full report — Application Load Balancer
+├── Asg_1         # Assignment 1 full report — VPC & Networking
+└── Asg_2     # Assignment 2 full report — Application Load Balancer
 ```
 
-Each `.docx` report includes the full architecture diagram, annotated console screenshots for every step, and a written narrative covering both the implementation and the troubleshooting process.
+Each report includes the full architecture diagram, annotated console screenshots for every step, and a written narrative covering both the implementation and the troubleshooting process.
