@@ -7,7 +7,7 @@ A two-part hands-on AWS portfolio covering core networking fundamentals and prod
 | **Focus** | VPC & Networking | Application Load Balancer |
 | **Core service** | VPC, IGW, NAT Gateway, Route Tables | EC2, ALB, Target Groups, Route 53 |
 | **Bonus completed** | ✅ Bastion Host, ✅ CloudWatch Monitoring | ✅ Custom domain via Route 53 |
-| **Report** | `AWS_Project_ASM_1.docx` | `Assignment2_ALB_Report.docx` |
+
 
 ---
 
