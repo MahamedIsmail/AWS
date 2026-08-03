@@ -1,6 +1,6 @@
 # AWS Cloud Networking & DevOps Projects
 
-A two-part hands-on AWS portfolio covering core networking fundamentals and production-style application delivery — built from scratch in the AWS Console, with every design decision, security control, and troubleshooting step documented.
+A two-part hands-on AWS portfolio covering core networking fundamentals and production-style application delivery  built from scratch in the AWS Console, with every design decision, security control, and troubleshooting step documented.
 
 | | Assignment 1 | Assignment 2 |
 |---|---|---|
@@ -22,7 +22,7 @@ A two-part hands-on AWS portfolio covering core networking fundamentals and prod
 
 ## Project 1 — VPC & Networking
 
-**Objective:** Design and build a fully segmented custom VPC from the ground up — public and private subnets, correct internet routing for each tier, and EC2 instances deployed across both — establishing the networking foundation that Project 2 builds on.
+**Objective:** Design and build a fully segmented custom VPC from the ground up public and private subnets, correct internet routing for each tier, and EC2 instances deployed across both  establishing the networking foundation that Project 2 builds on.
 
 ### What was built
 
@@ -50,10 +50,10 @@ A two-part hands-on AWS portfolio covering core networking fundamentals and prod
 
 ### What was built
 
-- Two EC2 instances (Amazon Linux, NGINX) in **separate Availability Zones**, each returning a distinct response so load balancing could be visually verified.
+- Two EC2 instances (Amazon Linux machine, NGINX web server) in **separate Availability Zones**, each returning a distinct response so load balancing could be visually verified.
 - An **internet-facing Application Load Balancer** spanning both public subnets, with an HTTP:80 listener forwarding to a health-checked target group.
 - **Security group isolation**: the ALB accepts HTTP from anywhere, while each EC2 instance accepts HTTP *only* from the ALB's security group — direct public access was removed once health checks passed.
-- Verified round-robin distribution across both instances, and confirmed both targets reporting **healthy**.
+- Verified distribution across both instances, and confirmed both targets reporting **healthy**.
 
 ### Bonus objective (completed)
 
