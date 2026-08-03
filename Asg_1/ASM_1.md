@@ -1,6 +1,4 @@
-*Assignment 1 --- a custom VPC built from scratch, with public and
-private subnets, correct internet routing and EC2 instances deployed
-across both tiers.*
+#  Assignment 1 : a custom VPC built from scratch, with public and private subnets, correct internet routing and EC2 instances deployed across both tiers.
 
 ### 
 
@@ -17,50 +15,17 @@ tiers.*
 
 *Success criteria for this assignment:*
 
--   *A custom VPC (e.g. 10.0.0.0/16) containing one public subnet and
-    > one private subnet.*
-
--   *An Internet Gateway attached to the VPC, and a NAT Gateway (with an
-    > Elastic IP) deployed in the public subnet to provide outbound
-    > internet access for the private subnet.*
-
--   *A public route table with a default route (0.0.0.0/0) via the
-    > Internet Gateway, and a private route table with a default route
-    > via the NAT Gateway.*
-
--   *A public EC2 instance launched in the public subnet with a public
-    > IP, and a private EC2 instance launched in the private subnet with
-    > no public IP.*
-
--   *Security groups configured so the public EC2 instance allows
-    > SSH/HTTP only from the administrator\'s IP, while the private EC2
-    > instance allows access only from trusted internal sources (e.g.
-    > the public EC2 instance or a Bastion host) --- never directly from
-    > the internet.*
-
--   *(Bonus) A Bastion Host deployed to provide secure access into the
-    > private EC2 instance, and CloudWatch monitoring enabled on the
-    > instances.*
+- A custom VPC (e.g. 10.0.0.0/16) containing one public subnet and one private subnet.
+- An Internet Gateway attached to the VPC, and a NAT Gateway (with an Elastic IP) deployed in the public subnet to provide outbound internet access for the private subnet.
+- A public route table with a default route (0.0.0.0/0) via the Internet Gateway, and a private route table with a default route via the NAT Gateway.
+- A public EC2 instance launched in the public subnet with a public IP, and a private EC2 instance launched in the private subnet with no public IP.
+- Security groups configured so the public EC2 instance allows SSH/HTTP only from the administrator's IP, while the private EC2 instance allows access only from trusted internal sources (e.g. the public EC2 instance or a Bastion host) — never directly from the internet.
+- (Bonus) A Bastion Host deployed to provide secure access into the private EC2 instance, and CloudWatch monitoring enabled on the instances.
 
 # 
 
-# 
 
-# 
 
-# 
-
-# 
-
-# 
-
-# 
-
-# 
-
-# 
-
-# 
 
 # Planning & Architecture 
 
@@ -70,7 +35,7 @@ routing relationships were clear before any resource was actually
 created. This diagram gives a high level overview of the architecture,
 finer details are covered in the surrounding text.
 
-![](./media/image1.png){width="7.0in" height="5.527777777777778in"}
+![](./media/image1.png)
 
 *Figur 0*
 
@@ -79,16 +44,13 @@ finer details are covered in the surrounding text.
 The VPC was the first resource created, with everything else built on
 top of it step by step.
 
-![](./media/image8.png){width="5.833333333333333in"
-height="3.1041666666666665in"}
-
+![](./media/image8.png)
 *Figur 1*
 
 *VPC creation form --- CIDR block 10.0.0.0/16, Default tenancy, no
 encryption control, tagged \"Assignment 1 - VPC & Networking\"*
 
-![](./media/image5.png){width="5.833333333333333in"
-height="2.5520833333333335in"}
+![](./media/image5.png)
 
 *Figur 2*
 
@@ -100,8 +62,7 @@ subnets or gateways yet*
 The public subnet was created first; the private subnet was planned to
 follow the same process, differing only in its route table.
 
-![](./media/image7.png){width="5.833333333333333in"
-height="3.6979166666666665in"}
+![](./media/image7.png)
 
 *Figur 3*
 
@@ -114,8 +75,7 @@ address), leaving 251 usable addresses --- from 10.0.0.4 to 10.0.0.254.
 
 # 3. Private Subnet --- CIDR Planning
 
-![](./media/image6.png){width="5.833333333333333in"
-height="1.1666666666666667in"}
+![](./media/image6.png)
 
 *Figur 4*
 
@@ -130,8 +90,7 @@ overlap, not a partial one. Changing the third octet gives a completely
 separate, non overlapping /24 block within the same /16 VPC. IP range
 10.0.7.4 to 10.0.7.254.
 
-![](./media/image22.png){width="5.833333333333333in"
-height="1.3541666666666667in"}
+![](./media/image22.png)
 
 *Figur 5*
 
@@ -143,35 +102,30 @@ the 10.0.0.0/16 VPC*
 An Internet Gateway is what allows two way traffic between the VPC and
 the internet, for any resource that has a public or Elastic IP.
 
-![](./media/image9.png){width="5.833333333333333in"
-height="1.9791666666666667in"}
-
+![](./media/image9.png)
 *Figur 6*
 
 *Creating the Internet Gateway --- AWS_modul_project_IGW*
 
-![](./media/image2.png){width="5.833333333333333in" height="1.6875in"}
-
-7
+![](./media/image2.png)
+*Figur 7*
 
 *Internet Gateway created --- initial state: Detached*
 
-![](./media/image24.png){width="5.833333333333333in" height="2.25in"}
+![](./media/image24.png)
 
 *Figur 8*
 
 *Attaching the Internet Gateway to the VPC*
 
-![](./media/image17.png){width="5.833333333333333in"
-height="1.4583333333333333in"}
+![](./media/image17.png)
 
 *Figur 9*
 
 *Selecting the VPC to attach the Internet Gateway to*
 
-![](./media/image37.png){width="5.833333333333333in" height="1.5in"}
-
-10
+![](./media/image37.png)
+*Figur 10*
 
 *Internet Gateway confirmed Attached to the VPC*
 
@@ -181,15 +135,14 @@ An Elastic IP was allocated to give the NAT Gateway a fixed public
 address to use when sending traffic out to the internet on behalf of the
 private subnet.
 
-![](./media/image23.png){width="5.833333333333333in" height="2.53125in"}
+![](./media/image23.png)
 
 *Figur 11*
 
 *Allocating an Elastic IP address (Zonal, matching the region\'s network
 border group)*
 
-![](./media/image15.png){width="5.833333333333333in"
-height="0.6354166666666666in"}
+![](./media/image15.png)
 
 *Figur 12*
 
@@ -204,16 +157,14 @@ IP and the Internet Gateway then translates that address to the NAT
 Gateway\'s public Elastic IP. A Zonal scope was used since this project
 doesn\'t need to scale across multiple Availability Zones.
 
-![](./media/image21.png){width="5.833333333333333in" height="4.0in"}
+![](./media/image21.png)
 
 *Figur 13*
 
 *Creating the NAT Gateway --- Zonal, in the public subnet, with the
 allocated Elastic IP attached*
 
-![](./media/image27.png){width="5.833333333333333in"
-height="2.8958333333333335in"}
-
+![](./media/image27.png)
 *Figur 14*
 
 *NAT Gateway created --- Aws_project_Natgateway, status Pending →
@@ -224,15 +175,13 @@ Available*
 A route table was created for the public subnet, to control how traffic
 is routed to and from the internet.
 
-![](./media/image39.png){width="5.833333333333333in"
-height="2.1354166666666665in"}
+![](./media/image39.png)
 
 *Figur 15*
 
 *Creating the public route table --- Assigmnet1_Public_routtable*
 
-![](./media/image31.png){width="5.833333333333333in"
-height="2.3020833333333335in"}
+![](./media/image31.png)
 
 *Figur 16*
 
@@ -241,17 +190,14 @@ present so far*
 
 ## 7.1 Associating the Public Route Table
 
-![](./media/image29.png){width="5.833333333333333in"
-height="1.9583333333333333in"}
+![](./media/image29.png)
 
-*Figur 16*
+*Figur 17*
 
 *Associating the public route table with Assignment1_Public subnet*
 
-![](./media/image40.png){width="5.833333333333333in"
-height="1.5416666666666667in"}
-
-*Figur 17*
+![](./media/image40.png)
+*Figur 1*
 
 *Route tables list confirming the public subnet association*
 
@@ -261,22 +207,17 @@ The same process was repeated for the private subnet, using a separate
 route table so its default route could point to the NAT Gateway instead
 of the Internet Gateway.
 
-![](./media/image32.png){width="5.833333333333333in"
-height="2.1458333333333335in"}
-
+![](./media/image32.png)
 *Figur 18*
 
 *Creating the private route table --- Assignment1_Private_routtable*
 
-![](./media/image26.png){width="5.833333333333333in"
-height="1.7395833333333333in"}
-
+![](./media/image26.png)
 *Figur 19*
 
 *Associating the private route table with Assignment1_Privatesubnet*
 
-![](./media/image19.png){width="5.833333333333333in"
-height="2.0208333333333335in"}
+![](./media/image19.png)
 
 *Figur 20*
 
@@ -289,16 +230,13 @@ A default route (0.0.0.0/0) was added pointing to the Internet Gateway,
 so any traffic not destined for the VPC\'s own address range is sent to
 the internet from the public subnet.
 
-![](./media/image16.png){width="5.833333333333333in"
-height="2.5729166666666665in"}
+![](./media/image16.png)
 
 *Figur 21*
 
 *Editing routes on the public route table*
 
-![](./media/image4.png){width="5.833333333333333in"
-height="3.2395833333333335in"}
-
+![](./media/image4.png)
 *Figur 22*
 
 *Public route table updated --- 0.0.0.0/0 → Internet Gateway, status
@@ -310,9 +248,7 @@ A default route (0.0.0.0/0) was added pointing to the NAT Gateway,
 giving the private subnet safe, outbound only internet access without
 exposing it to inbound connections.
 
-![](./media/image3.png){width="5.833333333333333in"
-height="2.5729166666666665in"}
-
+![](./media/image3.png)
 *Figur 23*
 
 *Private route table updated --- 0.0.0.0/0 → NAT Gateway, status Active*
@@ -323,9 +259,7 @@ With routing in place, the public and private EC2 instances were
 launched next. We started with the public one first, since it was gonna
 be easier to implement based on our architecture (figure 0).
 
-![](./media/image13.png){width="5.520833333333333in"
-height="6.458333333333333in"}
-
+![](./media/image13.png)
 *Figure 24*
 
 *Launching the public EC2 instance --- Amazon Linux 2023, t3.micro*
@@ -340,8 +274,7 @@ admin\'s own IP only(Figure 25). We restricted access to a single IP
 address to reduce the attack surface and limit the number of potential
 attack sources.
 
-![](./media/image11.png){width="4.083333333333333in"
-height="6.458333333333333in"}
+![](./media/image11.png)
 
 *Figur 25*
 
@@ -352,8 +285,7 @@ inbound rules for SSH and HTTP restricted to My IP*
 
 The instance was tested by connecting over SSH (port 22):
 
-![](./media/image34.png){width="5.833333333333333in"
-height="2.9270833333333335in"}
+![](./media/image34.png)
 
 *Figur 26*
 
@@ -372,15 +304,14 @@ software was installed to answer on port 80, meaning my EC2 had no
 process listening on that port --- in other words, no web server was
 running.\"
 
-![](./media/image10.png){width="5.833333333333333in" height="0.5in"}
+![](./media/image10.png)
 
 *Figur 27*
 
 *Testing port 80 from the local machine with netcat --- connection
 refused*
 
-![](./media/image12.png){width="5.833333333333333in"
-height="0.4895833333333333in"}
+![](./media/image12.png)
 
 *Figur 28*
 
@@ -397,7 +328,7 @@ A dedicated EC2 instance was launched in the public subnet to act as a
 bastion (jump box) for reaching the private instance, rather than
 reusing the existing public server.
 
-![](./media/image36.png){width="5.833333333333333in" height="6.0in"}
+![](./media/image36.png)
 
 *Figur 29*
 
@@ -407,15 +338,13 @@ Its Security Group only allows SSH (22), restricted to the admin\'s own
 IP no HTTP rule added because bastion\'s objective is only secure
 connectivity to my private instances.
 
-![](./media/image14.png){width="4.104166666666667in"
-height="6.458333333333333in"}
-
+![](./media/image14.png)
 *Figur 30*
 
 *Bastion host network settings and Security Group --- SSH only, source
 My IP*
 
-![](./media/image18.png){width="5.833333333333333in" height="4.34375in"}
+![](./media/image18.png)
 
 *Figur 30*
 
@@ -423,8 +352,7 @@ My IP*
 
 # 11. Launching the Private EC2 Instance
 
-![](./media/image20.png){width="5.833333333333333in"
-height="5.510416666666667in"}
+![](./media/image20.png)
 
 *Figur 31*
 
@@ -437,8 +365,7 @@ referenced by ID rather than by IP --- so the rule stays valid even if
 the bastion is ever replaced or its IP changes (for example, after a
 reboot), instead of needing to be manually updated each time.
 
-![](./media/image25.png){width="5.833333333333333in"
-height="6.135416666666667in"}
+![](./media/image25.png)
 
 *Figur 32*
 
@@ -455,21 +382,18 @@ memory and signs authentication challenges on behalf of the bastion when
 it connects onward to the private instance, without the key itself ever
 being copied anywhere.
 
-![](./media/image28.png){width="5.833333333333333in" height="3.40625in"}
-
+![](./media/image28.png)
 *Figur 33*
 
 *Private EC2 key pair and Security Group configuration*
 
-![](./media/image30.png){width="5.833333333333333in"
-height="4.885416666666667in"}
+![](./media/image30.png)
 
 *Figur 34*
 
 *Loading the private EC2\'s key into the local ssh-agent (ssh-add)*
 
-![](./media/image33.png){width="5.833333333333333in"
-height="1.9166666666666667in"}
+![](./media/image33.png)
 
 *Figur 35*
 
@@ -487,49 +411,34 @@ I verified internet access with ping 8 8 8 8 this is standard test to
 see if device is connected tp the internet i basically send packets to
 googles dns servers.
 
-![](./media/image41.png){width="5.640625546806649in"
-height="5.447567804024497in"}
-
+![](./media/image41.png)
 *Figur 36*
 
 # 
 
-# 
 
-# 
 
-# 
 
-# 
-
-# 
-
-# 
-
-# 
-
-# 
 
 # 13. CloudWatch Monitoring
 
 CloudWatch monitoring was enabled on the instances to track their health
 and performance.
 
-![](./media/image38.png){width="5.833333333333333in" height="3.875in"}
+![](./media/image38.png)
 
 *Figur 37*
 
 *EC2 instance list --- accessing Monitor and troubleshoot for detailed
 monitoring*
 
-![](./media/image35.png){width="5.833333333333333in" height="2.125in"}
-
+![](./media/image35.png)
 '*Figur 38*
 
 *Detailed monitoring enabled --- confirmed across all four running
 instances (public EC2, private EC2, bastion, and additional server)*
 
-# 
+
 
 # Conclusion
 
